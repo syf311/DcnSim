@@ -1,15 +1,27 @@
 package sim.dcn.entity;
 
-import java.util.List;
+import sim.common.ValidationHelper;
 
 public final class VirtualMachine extends NetworkComponent {
 
-	public VirtualMachine(int id, List<Link> links) {
-		super(id, links);
+	private Server server;
+	
+	public VirtualMachine(int id) {
+		super(id, null);
 	}
 
 	@Override
 	public String getType() {
 		return "VirtualMachine";
+	}
+	
+	public void DeployToServer(Server server) {
+		ValidationHelper.notNull(server, "server");
+		this.server = server;
+		this.links = server.getLinks();
+	}
+	
+	public Server getServer() {
+		return this.server;
 	}
 }

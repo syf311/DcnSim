@@ -13,9 +13,7 @@ public class Link {
 	
 	private NetworkComponent endPoint2;
 	
-	private double capacity1To2;
-	
-	private double capacity2To1;
+	private double capacity;
 	
 	private List<Request> requests1To2;
 	
@@ -24,17 +22,14 @@ public class Link {
 	public Link(
 			NetworkComponent endPoint1, 
 			NetworkComponent endPoint2, 
-			double capacity1To2, 
-			double capacity2To1) {
+			double capacity) {
 		ValidationHelper.notNull(endPoint1, "endPoint1");
 		ValidationHelper.notNull(endPoint2, "endPoint2");
-		ValidationHelper.largerThanZero(capacity1To2, "capacity1To2");
-		ValidationHelper.largerThanZero(capacity2To1, "capacity2To1");
+		ValidationHelper.largerThanZero(capacity, "capacity");
 		
 		this.endPoint1 = endPoint1;
 		this.endPoint2 = endPoint2;
-		this.capacity1To2 = capacity1To2;
-		this.capacity2To1 = capacity2To1;
+		this.capacity = capacity;
 		this.requests1To2 = new LinkedList<Request>();
 		this.requests2To1 = new LinkedList<Request>();
 	}
@@ -47,12 +42,12 @@ public class Link {
 		return this.endPoint2;
 	}
 	
-	public double capacity1To2() {
-		return this.capacity1To2;
+	public double capacity() {
+		return this.capacity;
 	}
 	
-	public double capacity2To1() {
-		return this.capacity2To1;
+	public double getConsumedBandWidth() {
+		return this.getConsumedBandWidth1To2() + this.getConsumedBandWidth2To1();
 	}
 	
 	public double getConsumedBandWidth1To2()
@@ -99,17 +94,33 @@ public class Link {
 		return this.endPoint2 == endPoint;
 	}
 	
+	public NetworkComponent getTheOtherEndPoint(NetworkComponent endPoint) {
+		ValidationHelper.notNull(endPoint, "endPoint");
+		NetworkComponent theOtherEndPoint = null;
+		if (this.endPoint1 == endPoint) {
+			theOtherEndPoint = this.endPoint2;
+		}
+		else if (this.endPoint2 == endPoint) {
+			theOtherEndPoint = this.endPoint1;
+		}
+		else {
+			throw new IllegalStateException(String.format("%s did not match any end point on %s", endPoint, this));
+		}
+		
+		return theOtherEndPoint;
+	}
+	
 	@Override
 	public String toString()
 	{
 		return String.format(
-				"Link endPoint1 %s, endPoint2 %s, capacity1To2 %f, capacity2To1 %f, consumedBandWidth1To2 %f, ConsumedBandWidth2To1 %f", 
+				"Link endPoint1 %s, endPoint2 %s, capacity %f, consumedBandWidth1To2 %f, consumedBandWidth2To1 %f, totalConsumedBandWidth %f", 
 				this.endPoint1, 
 				this.endPoint2,
-				this.capacity1To2,
-				this.capacity2To1,
+				this.capacity,
 				this.getConsumedBandWidth1To2(),
-				this.getConsumedBandWidth2To1());
+				this.getConsumedBandWidth2To1(),
+				this.getConsumedBandWidth());
 	}
 	
 	private static void RunOneCycle(List<Request> requests, Link link) {

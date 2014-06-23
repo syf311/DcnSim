@@ -1,11 +1,9 @@
 package sim.dcn.entity;
 
-import java.util.List;
-
 public final class Switch extends NetworkComponent {
 
-	public Switch(int id, List<Link> links) {
-		super(id, links);
+	public Switch(int id) {
+		super(id, null);
 	}
 
 	@Override

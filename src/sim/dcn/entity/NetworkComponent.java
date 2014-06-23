@@ -34,4 +34,8 @@ public abstract class NetworkComponent {
 	public List<Link> getLinks() {
 		return this.links;
 	}
+	
+	public void AddLink(Link link) {
+		this.links.add(link);
+	}
 }

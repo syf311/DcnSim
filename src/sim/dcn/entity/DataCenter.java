@@ -1,28 +1,20 @@
 package sim.dcn.entity;
 
+import java.util.Collection;
 import java.util.List;
 
-import sim.common.ValidationHelper;
-
 public class DataCenter {
-	private List<VirtualMachine> virtualMachines;
+	protected List<Server> servers;
 	
-	private List<Switch> switches;
+	protected List<Switch> switches;
 	
-	private List<Link> links;
+	protected List<Link> links;
 	
-	public DataCenter(List<VirtualMachine> virtualMachines, List<Switch> switches, List<Link> links) {
-		ValidationHelper.notNullOrEmpty(virtualMachines, "virtualMachines");
-		ValidationHelper.notNullOrEmpty(switches, "switches");
-		ValidationHelper.notNullOrEmpty(links, "links");
-		
-		this.virtualMachines = virtualMachines;
-		this.switches = switches;
-		this.links = links;
+	public DataCenter() {
 	}
 	
-	public List<VirtualMachine> getVirtualMachines() {
-		return this.virtualMachines;
+	public List<Server> getServers() {
+		return this.servers;
 	}
 	
 	public List<Switch> getSwitches() {
@@ -31,5 +23,27 @@ public class DataCenter {
 	
 	public List<Link> getLinks() {
 		return this.links;
+	}
+	
+	public Server getServer(int id) {
+		return DataCenter.getNetworkComponent(this.servers, id, Server.class.getSimpleName());
+	}
+	
+	public Switch getSwitch(int id) {
+		return DataCenter.getNetworkComponent(this.switches, id, Switch.class.getSimpleName());
+	}
+	
+	public Link getLink(int id) {
+		return DataCenter.getNetworkComponent(this.links, id, Link.class.getSimpleName());
+	}
+	
+	private static <T> T getNetworkComponent(Collection<T> collection, int id, String objectName) {
+		for (T object : collection) {
+			if (((NetworkComponent)object).getId() == id) {
+				return object;
+			}
+		}
+		
+		throw new IllegalStateException(String.format("Cannot get any %s with id %d", objectName, id));
 	}
 }
