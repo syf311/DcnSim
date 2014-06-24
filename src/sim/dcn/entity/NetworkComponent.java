@@ -1,5 +1,6 @@
 package sim.dcn.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sim.common.*;
@@ -15,8 +16,6 @@ public abstract class NetworkComponent {
 	public NetworkComponent (int id, List<Link> links)
 	{
 		this.id = id;
-		
-		ValidationHelper.notNullOrEmpty(links, "links");
 		
 		this.links = links;
 	}
@@ -36,6 +35,10 @@ public abstract class NetworkComponent {
 	}
 	
 	public void AddLink(Link link) {
+		if (this.links == null) {
+			this.links = new ArrayList<Link>();
+		}
+		
 		this.links.add(link);
 	}
 }

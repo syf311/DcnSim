@@ -14,7 +14,6 @@ public class Server extends NetworkComponent {
 	
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
 		return "Server";
 	}
 	

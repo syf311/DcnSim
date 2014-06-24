@@ -21,6 +21,12 @@ public class ValidationHelper {
 		}
 	}
 	
+	public static void notNullOrEmpty(String value, String name) {
+		if (ValidationHelper.isNullOrEmpty(value)) {
+			throw new IllegalArgumentException(name);
+		}
+	}
+	
 	public static void largerThanZero(int value, String name) {
 		if (value <= 0) {
 			throw new IllegalArgumentException(name);
@@ -41,6 +47,10 @@ public class ValidationHelper {
 	
 	public static boolean isNullOrEmpty(Collection<?> collection) {
 		return collection == null || collection.isEmpty();
+	}
+	
+	public static boolean isNullOrEmpty(String value) {
+		return value == null || value.isEmpty();
 	}
 	
 	public static boolean isPowerOfTwo(int number) {

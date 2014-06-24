@@ -6,7 +6,23 @@ import sim.common.ValidationHelper;
 
 public final class MultiTreeDataCenter extends DataCenter {
 
+	public MultiTreeDataCenter(String[] arguments) {
+		if (arguments.length != 3) {
+			throw new IllegalArgumentException("Wrong number of arguments to build a MultiTree topology data center");
+		}
+		
+		int leafCount = Integer.parseInt(arguments[0]);
+		int foreighLinksPerLeaf = Integer.parseInt(arguments[1]);
+		double defaultLinkBandWidthCapacity = Double.parseDouble(arguments[2]);
+		
+		this.Initialize(leafCount, foreighLinksPerLeaf, defaultLinkBandWidthCapacity);
+	}
+	
 	public MultiTreeDataCenter(int leafCount, int foreighLinksPerLeaf, double defaultLinkBandWidthCapacity) {
+		this.Initialize(leafCount, foreighLinksPerLeaf, defaultLinkBandWidthCapacity);
+	}
+	
+	private void Initialize(int leafCount, int foreighLinksPerLeaf, double defaultLinkBandWidthCapacity) {
 		ValidationHelper.powerOfTwo(leafCount, "leafCount");
 		if (foreighLinksPerLeaf > (leafCount/2 - 1)) {
 			throw new IllegalArgumentException("foreighLinksPerLeaf");
