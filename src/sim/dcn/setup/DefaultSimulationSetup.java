@@ -1,8 +1,5 @@
 package sim.dcn.setup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sim.common.ValidationHelper;
 import sim.dcn.entity.DataCenter;
 import sim.dcn.entity.Server;

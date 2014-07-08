@@ -5,6 +5,10 @@ import java.util.List;
 import sim.dcn.entity.Request;
 import sim.dcn.entity.VirtualMachine;
 
+// A group requests means the request source will generate a request 
+// to all other virtual machines in the group and also these requests
+// will be synchronized in the way that only when all the requests are
+// finished do we consider the group of requests are finished.
 public class GroupRequestsGenerator extends RegularRequestsGenerator {
 	
 	public GroupRequestsGenerator(
