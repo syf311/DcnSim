@@ -1,7 +1,9 @@
 package sim.dcn.entity;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
+
+import sim.common.ValidationHelper;
 
 public class DataCenter {
 	protected List<Server> servers;
@@ -10,7 +12,23 @@ public class DataCenter {
 	
 	protected List<Link> links;
 	
+	protected List<Tenant> tenants;
+	
 	public DataCenter() {
+	}
+	
+	public void addTenant(Tenant tenant) {
+		ValidationHelper.notNull(tenant, "tenant");
+		
+		if (this.tenants == null) {
+			this.tenants = new ArrayList<Tenant>();
+		}
+		
+		this.tenants.add(tenant);
+	}
+	
+	public List<Tenant> getTenants() {
+		return this.tenants;
 	}
 	
 	public List<Server> getServers() {
@@ -26,24 +44,14 @@ public class DataCenter {
 	}
 	
 	public Server getServer(int id) {
-		return DataCenter.getNetworkComponent(this.servers, id, Server.class.getSimpleName());
+		return Entity.getEntity(this.servers, id, Server.class.getSimpleName());
 	}
 	
 	public Switch getSwitch(int id) {
-		return DataCenter.getNetworkComponent(this.switches, id, Switch.class.getSimpleName());
+		return Entity.getEntity(this.switches, id, Switch.class.getSimpleName());
 	}
 	
 	public Link getLink(int id) {
-		return DataCenter.getNetworkComponent(this.links, id, Link.class.getSimpleName());
-	}
-	
-	private static <T> T getNetworkComponent(Collection<T> collection, int id, String objectName) {
-		for (T object : collection) {
-			if (((NetworkComponent)object).getId() == id) {
-				return object;
-			}
-		}
-		
-		throw new IllegalStateException(String.format("Cannot get any %s with id %d", objectName, id));
+		return Entity.getEntity(this.links, id, Link.class.getSimpleName());
 	}
 }

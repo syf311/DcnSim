@@ -37,7 +37,7 @@ public class Path {
 		return this.links;
 	}
 	
-	public void SendReuqest(Request request) {
+	public void sendReuqest(Request request) {
 		Logger.getLogger(Path.class.getName()).log(Level.INFO, String.format("Sending %s over a path", request));
 		
 		ValidationHelper.notNull(request, "request");
@@ -54,11 +54,11 @@ public class Path {
 		NetworkComponent currentFrom = this.source;
 		for (Link link : this.links) {
 			if (link.isEndPoint1(currentFrom)) {
-				link.SendRequest1To2(request);
+				link.sendRequest1To2(request);
 				currentFrom = link.getEndPoint2();
 			} 
 			else if (link.isEndPoint2(currentFrom)) {
-				link.SendRequest2To1(request);
+				link.sendRequest2To1(request);
 				currentFrom = link.getEndPoint1();
 			}
 			else {

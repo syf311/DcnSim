@@ -2,7 +2,7 @@ package sim.common;
 
 import java.util.Collection;
 
-public class ValidationHelper {
+public class ValidationHelper<T> {
 	
 	private ValidationHelper() {
 
@@ -27,6 +27,12 @@ public class ValidationHelper {
 		}
 	}
 	
+	public static <T> void notNullOrEmpty(T[] array, String name) {
+		if (ValidationHelper.isNullOrEmpty(array)) {
+			throw new IllegalArgumentException(name);
+		}
+	}
+	
 	public static void largerThanZero(int value, String name) {
 		if (value <= 0) {
 			throw new IllegalArgumentException(name);
@@ -47,6 +53,10 @@ public class ValidationHelper {
 	
 	public static boolean isNullOrEmpty(Collection<?> collection) {
 		return collection == null || collection.isEmpty();
+	}
+	
+	public static <T> boolean isNullOrEmpty(T[] array) {
+		return array == null || array.length == 0;
 	}
 	
 	public static boolean isNullOrEmpty(String value) {

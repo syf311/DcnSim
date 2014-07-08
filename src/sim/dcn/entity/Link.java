@@ -19,10 +19,13 @@ public class Link {
 	
 	private List<Request> requests2To1;
 	
+	private boolean isLocal;
+	
 	public Link(
 			NetworkComponent endPoint1, 
 			NetworkComponent endPoint2, 
-			double capacity) {
+			double capacity,
+			boolean isLocal) {
 		ValidationHelper.notNull(endPoint1, "endPoint1");
 		ValidationHelper.notNull(endPoint2, "endPoint2");
 		ValidationHelper.largerThanZero(capacity, "capacity");
@@ -32,6 +35,7 @@ public class Link {
 		this.capacity = capacity;
 		this.requests1To2 = new LinkedList<Request>();
 		this.requests2To1 = new LinkedList<Request>();
+		this.isLocal = isLocal;
 	}
 	
 	public NetworkComponent getEndPoint1() {
@@ -70,18 +74,18 @@ public class Link {
 		return consumedBandWidth;
 	}
 	
-	public void RunOneCycle()
+	public void runOneCycle()
 	{
-		Link.RunOneCycle(this.requests1To2, this);
-		Link.RunOneCycle(this.requests2To1, this);
+		Link.runOneCycle(this.requests1To2, this);
+		Link.runOneCycle(this.requests2To1, this);
 	}
 	
-	public void SendRequest1To2(Request request) {
+	public void sendRequest1To2(Request request) {
 		Logger.getLogger(Link.class.getName()).log(Level.INFO, String.format("Sending %s over %s", request, this));
 		this.requests1To2.add(request);
 	}
 	
-	public void SendRequest2To1(Request request) {
+	public void sendRequest2To1(Request request) {
 		Logger.getLogger(Link.class.getName()).log(Level.INFO, String.format("Sending %s over %s", request, this));
 		this.requests2To1.add(request);
 	}
@@ -123,14 +127,18 @@ public class Link {
 				this.getConsumedBandWidth());
 	}
 	
-	private static void RunOneCycle(List<Request> requests, Link link) {
+	public boolean isLocal() {
+		return this.isLocal;
+	}
+	
+	private static void runOneCycle(List<Request> requests, Link link) {
 		Logger.getLogger(Link.class.getName()).log(Level.INFO, String.format("Running one cycle"));
-		for (Request request : requests) {
+		/*for (Request request : requests) {
 			request.elapseOneCycle();
 			if (request.getRemainingDurationInCycles() == 0) {
 				Logger.getLogger(Link.class.getName()).log(Level.INFO, String.format("%s was due and removed from %s", request, link));
 				requests.remove(request);
 			}
-		}
+		}*/
 	}
 }
