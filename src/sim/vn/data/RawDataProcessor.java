@@ -61,6 +61,10 @@ public class RawDataProcessor {
 		}
 	}
 	
+	public String getRootFullPath(){
+		return this.rootFullPath;
+	}
+	
 	public List<Vehicle> getVehicles() {
 		return new ArrayList<Vehicle>(this.vehicles);
 	}
