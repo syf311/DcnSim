@@ -20,8 +20,23 @@ public class DefaultSimulationSetup implements SimulationSetup {
 	private void setupTenants(DataCenter dataCenter) {
 		Tenant tenant1 = new Tenant(1);	// tenant B
 		dataCenter.addTenant(tenant1);
-		this.setupVirtualMachines(dataCenter, tenant1, new ConstantNumericValueGenerator(40), 1, null);
-		this.setupVirtualMachines(dataCenter, tenant1, new ConstantNumericValueGenerator(20), 2, null);
+		this.setupVirtualMachines(
+				dataCenter, 
+				tenant1, 
+				new ConstantNumericValueGenerator(40), 
+				1, 
+				new GroupRequestsGenerator(
+						new ConstantNumericValueGenerator(80), // request bandwidth constantly assigned with 80
+						new RandomNumericValueGenerator(1, 10)));	// request cycle randomly chosen from 1 ~ 10
+		
+		this.setupVirtualMachines(
+				dataCenter, 
+				tenant1, 
+				new ConstantNumericValueGenerator(20), 
+				2, 
+				new GroupRequestsGenerator(
+						new RandomNumericValueGenerator(1, 100), // request bandwidth randomly chosen from 1 ~ 100
+						new RandomNumericValueGenerator(1, 10))); // request cycle randomly chosen from 1 ~ 10
 		
 		Tenant tenant2 = new Tenant(2); // tenant A
 		dataCenter.addTenant(tenant2);
@@ -31,9 +46,9 @@ public class DefaultSimulationSetup implements SimulationSetup {
 				new RandomNumericValueGenerator(30, 40), 
 				1, 
 				new RegularRequestsGenerator(
-						new RandomNumericValueGenerator(60, 70), 
-						new RandomNumericValueGenerator(1, 10), 
-						dataCenter.getServers().size() / 2));
+						new RandomNumericValueGenerator(60, 70), // request bandwidth
+						new RandomNumericValueGenerator(1, 10), // request cycle
+						dataCenter.getServers().size() / 2));	// how many machines that requests will be issued to
 	}
 	
 	private void setupVirtualMachines(

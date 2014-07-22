@@ -50,32 +50,7 @@ public class Link {
 		return this.capacity;
 	}
 	
-	public double getConsumedBandWidth() {
-		return this.getConsumedBandWidth1To2() + this.getConsumedBandWidth2To1();
-	}
-	
-	public double getConsumedBandWidth1To2()
-	{
-		double consumedBandWidth = 0;
-		for (Request request : this.requests1To2) {
-			consumedBandWidth += request.getBandWidthUsage();
-		}
-		
-		return consumedBandWidth;
-	}
-	
-	public double getConsumedBandWidth2To1()
-	{
-		double consumedBandWidth = 0;
-		for (Request request : this.requests2To1) {
-			consumedBandWidth += request.getBandWidthUsage();
-		}
-		
-		return consumedBandWidth;
-	}
-	
-	public void runOneCycle()
-	{
+	public void runOneCycle() {
 		Link.runOneCycle(this.requests1To2, this);
 		Link.runOneCycle(this.requests2To1, this);
 	}
@@ -115,16 +90,15 @@ public class Link {
 	}
 	
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return String.format(
 				"Link endPoint1 %s, endPoint2 %s, capacity %f, consumedBandWidth1To2 %f, consumedBandWidth2To1 %f, totalConsumedBandWidth %f", 
 				this.endPoint1, 
 				this.endPoint2,
-				this.capacity,
+				this.capacity/*,
 				this.getConsumedBandWidth1To2(),
 				this.getConsumedBandWidth2To1(),
-				this.getConsumedBandWidth());
+				this.getConsumedBandWidth()*/);
 	}
 	
 	public boolean isLocal() {

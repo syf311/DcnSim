@@ -45,13 +45,13 @@ public class RegularRequestsGenerator implements RequestsGenerator {
 		
 		while (requestToId != requestFromId) {
 			VirtualMachine requestTo = tenant.getVirtualMachine(groupId, requestToId);
-			Request request = new Request(
+			/*Request request = new Request(
 					requestFrom, 
 					requestTo, 
 					this.requestBandWidthGenerator.nextDoubleValue(), 
-					(int)this.requestCyclesGenerator.nextDoubleValue());
+					(int)this.requestCyclesGenerator.nextDoubleValue());*/
 			
-			requestsGenerated.add(request);
+			//requestsGenerated.add(request);
 			requestToId = (requestToId + this.interval) % groupCount;
 		}
 		

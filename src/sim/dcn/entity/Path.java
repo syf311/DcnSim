@@ -1,73 +1,62 @@
 package sim.dcn.entity;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import sim.common.*;
 
 public class Path {
-	private List<Link> links;	// links should be in the right order
+	private Link sourceLink;
 	
-	private NetworkComponent source;
+	private Link destinationLink;
 	
-	private NetworkComponent destination;
+	private Request request;
 	
-	public Path(NetworkComponent source, NetworkComponent destination, List<Link> links)
-	{
-		ValidationHelper.notNull(source, "source");
-		ValidationHelper.notNull(destination, "destination");
-		ValidationHelper.notNullOrEmpty(links, "links");
+	private double bandWidthDemandOnThePath;
+	
+	private boolean isMinGuaranteed; 
+	
+	private double buyerBid;
+	
+	private double sellerAsk;
+	
+	private double realCost;
+	
+	public Path(
+			Request request,  
+			Link sourceLink,
+			Link destinationLink,
+			double bandWidthDemandOnThePath,
+			boolean isMinGuaranteed) {
+		ValidationHelper.notNull(request, "request");
+		ValidationHelper.notNull(sourceLink, "sourceLink");
+		ValidationHelper.notNull(destinationLink, "destinationLink");
 		
-		this.source = source;
-		this.destination = destination;
-		this.links = links;
+		this.request = request;
+		this.sourceLink = sourceLink;
+		this.destinationLink = destinationLink;
+		this.bandWidthDemandOnThePath = bandWidthDemandOnThePath;
+		this.isMinGuaranteed = isMinGuaranteed;
 	}
 	
 	public NetworkComponent getSource() {
-		return this.source;
+		return this.request.getSource();
 	}
 	
 	public NetworkComponent getDestination() {
-		return this.destination;
+		return this.request.getDestination();
 	}
 	
-	public List<Link> getLinks()
-	{
-		return this.links;
+	public Request getRequest() {
+		return this.request;
 	}
 	
-	public void sendReuqest(Request request) {
-		Logger.getLogger(Path.class.getName()).log(Level.INFO, String.format("Sending %s over a path", request));
-		
-		ValidationHelper.notNull(request, "request");
-		if (request.getSource() != this.source || request.getDestination() != this.destination) {
-			throw new IllegalStateException(
-					String.format(
-							"request source %s, destination %s don't match path source $s, destination %s", 
-							request.getSource(), 
-							request.getDestination(), 
-							this.source, 
-							this.destination));
-		}
-		
-		NetworkComponent currentFrom = this.source;
-		for (Link link : this.links) {
-			if (link.isEndPoint1(currentFrom)) {
-				link.sendRequest1To2(request);
-				currentFrom = link.getEndPoint2();
-			} 
-			else if (link.isEndPoint2(currentFrom)) {
-				link.sendRequest2To1(request);
-				currentFrom = link.getEndPoint1();
-			}
-			else {
-				throw new IllegalStateException(
-						String.format(
-								"currentFrom %s does not match %s", 
-								currentFrom, 
-								link));
-			}
-		}
+	public Link getSourceLink() {
+		return this.sourceLink;
+	}
+	
+	public Link getDestinationLink() {
+		return this.destinationLink;
+	}
+	
+	public double getBandWidthDemandOnThePath() {
+		return this.bandWidthDemandOnThePath;
 	}
 }

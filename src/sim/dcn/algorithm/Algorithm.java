@@ -1,7 +1,7 @@
 package sim.dcn.algorithm;
 
-import sim.dcn.entity.DataCenter;;
+import sim.dcn.entity.DataCenter;
 
 public interface Algorithm {
-	Result run(DataCenter dataCenter);
+	void run(DataCenter dataCenter, int theCycle);
 }

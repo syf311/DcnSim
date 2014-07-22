@@ -28,7 +28,7 @@ public class GroupRequestsGenerator extends RegularRequestsGenerator {
 		for (Request request1 : requests) {
 			for (Request request2 : requests) {
 				if (request1 != request2) {
-					request1.AddRequestToRequestsGroup(request2);
+					//request1.AddRequestToRequestsGroup(request2);
 				}
 			}
 		}

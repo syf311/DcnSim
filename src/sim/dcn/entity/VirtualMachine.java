@@ -112,4 +112,18 @@ public final class VirtualMachine extends NetworkComponent {
 		
 		return unfinishedRequests;
 	}
+	
+	public List<Request> getUnstartedRequests() {
+		List<Request> unStartedRequests = new ArrayList<Request>();
+		
+		if (!ValidationHelper.isNullOrEmpty(this.requests)) {
+			for (Request request : this.requests) {
+				if (!request.isStarted()) {
+					unStartedRequests.add(request);
+				}
+			}
+		}
+		
+		return unStartedRequests;
+	}
 }
