@@ -104,7 +104,7 @@ public class RawDataProcessor {
 	}
 	
 	public String[] getDatesSortedAsc() {
-		String[] dates = (String[])this.dates.toArray();
+		String[] dates = (String[])this.dates.toArray(new String[this.dates.size()]);
 		Arrays.sort(dates);
 		return dates;
 	}

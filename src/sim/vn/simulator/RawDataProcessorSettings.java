@@ -21,7 +21,7 @@ public class RawDataProcessorSettings {
 	
 	private String outputRootFullPath;
 	
-	public RawDataProcessorSettings(
+	private RawDataProcessorSettings(
 			String rootFullPath, 
 			String cellSize,
 			String fromString,
