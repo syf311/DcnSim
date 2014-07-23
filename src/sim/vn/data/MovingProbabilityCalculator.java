@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -114,7 +112,7 @@ public class MovingProbabilityCalculator {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		File output = new File(
 				rootFolder, 
-				String.format("%d_%d_%d_%s_%s.txt", 
+				String.format("%d_%d_%d_%s_%s.prob", 
 						vehicle.getId(), 
 						windowSizeUnitInSeconds,
 						windowSizeInUnits, 

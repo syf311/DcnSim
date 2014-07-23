@@ -5,7 +5,7 @@ import java.util.Calendar;
 public class Beam {
 	private int vehicleId;
 	
-	private int theSecondInPeriod;
+	private long theSecondInPeriod;
 	
 	private double longitude;
 	
@@ -21,7 +21,7 @@ public class Beam {
 	
 	public Beam(
 			int vehicleId, 
-			int theSecondInPeriod,
+			long theSecondInPeriod,
 			double longitude,
 			double latitude,
 			int velocity,
@@ -37,7 +37,7 @@ public class Beam {
 		this.datetime = datetime;
 	}
 	
-	public static Beam getBeamForSearch(int theSecondInPeriod) {
+	public static Beam getBeamForSearch(long theSecondInPeriod) {
 		return new Beam(-1, theSecondInPeriod, -1, -1, -1, -1, false, null);
 	}
 	
@@ -49,7 +49,7 @@ public class Beam {
 		return this.vehicleId;
 	}
 	
-	public int getTheSecond() {
+	public long getTheSecond() {
 		return this.theSecondInPeriod;
 	}
 	

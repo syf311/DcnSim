@@ -11,14 +11,21 @@ public class DataProcessingHelper {
 		
 	}
 	
-	public static Beam getBeam(List<Beam> beams, int theSecond) {
+	public static Beam getBeam(List<Beam> beams, long theSecond) {
 		int indexOfFirstOneGreaterThanOrEqualTo = Collections.binarySearch(
 				beams, 
 				Beam.getBeamForSearch(theSecond), 
 				new Comparator<Beam>() {
 					@Override
 					public int compare(Beam arg0, Beam arg1) {
-						return arg0.getTheSecond() - arg1.getTheSecond();
+						long diff = arg0.getTheSecond() - arg1.getTheSecond();
+						if (diff > 0) {
+							return 1;
+						} else if (diff < 0) {
+							return -1;
+						} else {
+							return 0;
+						}
 					}
 		        });
 		

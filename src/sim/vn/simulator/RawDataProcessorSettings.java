@@ -7,6 +7,15 @@ import java.util.Calendar;
 import sim.common.ValidationHelper;
 
 public class RawDataProcessorSettings {
+	
+	public enum Ops {
+		CalculateMovingProbability,
+		
+		DiscretizeBeams,
+		
+		Usage,
+	}
+	
 	private String rootFullPath;
 	
 	private double cellSize;
@@ -21,6 +30,10 @@ public class RawDataProcessorSettings {
 	
 	private String outputRootFullPath;
 	
+	private Ops ops;
+	
+	private int unitsPerPartition;
+	
 	private RawDataProcessorSettings(
 			String rootFullPath, 
 			String cellSize,
@@ -28,7 +41,9 @@ public class RawDataProcessorSettings {
 			String toString,
 			String windowSizeUnitInSeconds,
 			String windowSizeInUnits,
-			String outputRootFullPath) throws ParseException {
+			String outputRootFullPath,
+			String ops,
+			String unitsPerPartition) throws ParseException {
 		ValidationHelper.notNullOrEmpty(rootFullPath, "rootFullPath");
 		ValidationHelper.notNullOrEmpty(outputRootFullPath, "outputRootFullPath");
 		
@@ -43,6 +58,8 @@ public class RawDataProcessorSettings {
 		this.windowSizeUnitInSeconds = Integer.parseInt(windowSizeUnitInSeconds);
 		this.windowSizeInUnits = Integer.parseInt(windowSizeInUnits);
 		this.outputRootFullPath = outputRootFullPath;
+		this.ops = Ops.valueOf(ops);
+		this.unitsPerPartition = Integer.parseInt(unitsPerPartition);
 	}
 
 	public String getRootFullPath() {
@@ -73,6 +90,14 @@ public class RawDataProcessorSettings {
 		return this.outputRootFullPath;
 	}
 	
+	public Ops getOps() {
+		return this.ops;
+	}
+	
+	public int getUnitsPerPartition() {
+		return this.unitsPerPartition;
+	}
+	
 	public static RawDataProcessorSettings getSettingsFromArgs(String[] args) throws ParseException {
 		final String rootFullPathPrefix = "--rootFullPath=";
 		final String cellSizePrefix = "--cellSize=";
@@ -81,6 +106,8 @@ public class RawDataProcessorSettings {
 		final String windowSizeUnitInSecondsPrefix = "--windowSizeUnitInSeconds=";
 		final String windowSizeInUnitsPrefix = "--windowSizeInUnits=";
 		final String outputRootFullPathPrefix = "--outputRootFullPath=";
+		final String opsPrefix = "--Ops=";
+		final String unitsPerPartitionPrefix = "--unitsPerPartition=";
 		
 		String rootFullPath = null;
 		String cellSize = null;
@@ -89,6 +116,8 @@ public class RawDataProcessorSettings {
 		String windowSizeUnitInSeconds = null;
 		String windowSizeInUnits = null;
 		String outputRootFullPath = null;
+		String ops = null;
+		String unitsPerPartition = null;
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].startsWith(rootFullPathPrefix)) {
 				rootFullPath = args[i].substring(rootFullPathPrefix.length()).replace("\"", "");
@@ -102,9 +131,12 @@ public class RawDataProcessorSettings {
 				windowSizeUnitInSeconds = args[i].substring(windowSizeUnitInSecondsPrefix.length()).replace("\"", "");
 			} else if (args[i].startsWith(windowSizeInUnitsPrefix)) {
 				windowSizeInUnits = args[i].substring(windowSizeInUnitsPrefix.length()).replace("\"", "");
-			} 
-			else if (args[i].startsWith(outputRootFullPathPrefix)) {
+			} else if (args[i].startsWith(outputRootFullPathPrefix)) {
 				outputRootFullPath = args[i].substring(outputRootFullPathPrefix.length()).replace("\"", "");
+			} else if (args[i].startsWith(opsPrefix)) {
+				ops = args[i].substring(opsPrefix.length()).replace("\"", "");
+			} else if (args[i].startsWith(unitsPerPartitionPrefix)) {
+				unitsPerPartition = args[i].substring(unitsPerPartitionPrefix.length()).replace("\"", "");
 			} 
 		}
 		
@@ -136,6 +168,14 @@ public class RawDataProcessorSettings {
 			outputRootFullPath = "c:\\lingding\\probability";
 		}
 		
+		if (ValidationHelper.isNullOrEmpty(ops)) {
+			ops = "Usage";
+		}
+		
+		if (ValidationHelper.isNullOrEmpty(unitsPerPartition)) {
+			unitsPerPartition = "10000";
+		}
+		
 		return new RawDataProcessorSettings(
 				rootFullPath, 
 				cellSize,
@@ -143,6 +183,8 @@ public class RawDataProcessorSettings {
 				to,
 				windowSizeUnitInSeconds,
 				windowSizeInUnits,
-				outputRootFullPath);
+				outputRootFullPath,
+				ops,
+				unitsPerPartition);
 	}
 }

@@ -43,15 +43,34 @@ public class RawDataProcessor {
 			Plane plane = rawDataProcessor.getPlane();
 			plane.splitToCells(settings.getCellSize());
 			
-			MovingProbabilityCalculator.calculateProbabilityAndOutput(
-					settings.getWindowSizeUnitInSeconds(),
-					settings.getwindowSizeInUnits(),
-					settings.getOutputRootFullPath(), 
-					settings.getFrom(), 
-					settings.getTo(), 
-					plane, 
-					rawDataProcessor.getVehicles(), 
-					rawDataProcessor);
+			
+			switch (settings.getOps()) {
+				case CalculateMovingProbability:
+					MovingProbabilityCalculator.calculateProbabilityAndOutput(
+							settings.getWindowSizeUnitInSeconds(),
+							settings.getwindowSizeInUnits(),
+							settings.getOutputRootFullPath(), 
+							settings.getFrom(), 
+							settings.getTo(), 
+							plane, 
+							rawDataProcessor.getVehicles(), 
+							rawDataProcessor);
+					break;
+				case DiscretizeBeams:
+					PositionsCalculator.discretizeBeams(
+							settings.getWindowSizeUnitInSeconds(), 
+							settings.getOutputRootFullPath(),
+							settings.getFrom(), 
+							settings.getTo(), 
+							plane, 
+							rawDataProcessor.getVehicles(),
+							rawDataProcessor, 
+							settings.getUnitsPerPartition());
+					break;
+				case Usage:
+				default:
+					break;
+			}
 			
 			long endMs = System.currentTimeMillis();
 			Logger.getLogger(Simulator.class.getName()).log(Level.INFO, String.format("Total run time:%d seconds", (endMs - startMs) / 1000));

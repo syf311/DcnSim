@@ -75,6 +75,5 @@ public class VehiclePurger {
 		} catch (Exception ex) {
 			Logger.getLogger(VehiclePurger.class.getName()).log(Level.SEVERE, ExceptionHelper.toString(ex));
 		}
-		
 	}
 }
